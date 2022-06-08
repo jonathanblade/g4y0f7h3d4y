@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 
 from src.api.schemas import GayOfTheDay, HTTPError, UserStatistics
+from src.api.security import require_api_key
 from src.db import create_new_user, find_gay, find_user_by_id, switch_user_orientation
 from src.utils import calc_duration
 
@@ -16,6 +17,7 @@ router = APIRouter()
         401: {"description": "Unauthorized.", "model": HTTPError},
         500: {"description": "Internal server error.", "model": HTTPError},
     },
+    dependencies=[Depends(require_api_key)],
 )
 async def get_stat(request: Request) -> list[UserStatistics]:
     collection = request.app.state.db.users
@@ -41,6 +43,7 @@ async def get_stat(request: Request) -> list[UserStatistics]:
         401: {"description": "Unauthorized.", "model": HTTPError},
         500: {"description": "Internal server error.", "model": HTTPError},
     },
+    dependencies=[Depends(require_api_key)],
 )
 async def set_curr_gay(request: Request, gay: GayOfTheDay) -> UserStatistics:
     collection = request.app.state.db.users

@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     db_password: str = Field(default="root", env="DB_PASSWORD")
     db_name: str = Field(default="main", env="DB_NAME")
 
+    api_key: str = Field(default="key", env="API_KEY")
+
     @property
     def db_url(cls) -> str:
         return f"mongodb+srv://{cls.db_user}:{cls.db_password}@cluster0.knywm.mongodb.net/?retryWrites=true&w=majority"
