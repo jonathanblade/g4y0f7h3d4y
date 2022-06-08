@@ -4,10 +4,10 @@ ARG DB_PASSWORD
 ENV POETRY_HOME=/opt/poetry \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_NO_INTERACTION=1 \
-    APP_PORT=$PORT \
-    DB_USER=$DB_USER \
-    DB_PASSWORD=$DB_PASSWORD
-ENV PATH=$POETRY_HOME/bin:$PATH
+    APP_PORT=${PORT} \
+    DB_USER=${DB_USER} \
+    DB_PASSWORD=${DB_PASSWORD}
+ENV PATH=${POETRY_HOME}/bin:${PATH}
 
 RUN apt-get update && \
     apt-get install -y curl && \
@@ -19,4 +19,4 @@ COPY pyproject.toml poetry.lock ./
 COPY src src
 
 RUN poetry install --no-dev
-CMD gunicorn -b 0.0.0.0:$APP_PORT -k uvicorn.workers.UvicornWorker src.main:app
+CMD gunicorn -b 0.0.0.0:${PORT} -k uvicorn.workers.UvicornWorker src.main:app
