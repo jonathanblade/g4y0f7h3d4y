@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     app_port: int = Field(default=3000, env="APP_PORT")
 
     api_prefix: str = Field(default="/api", env="API_PREFIX")
-    docs_url: str | None = Field(default="/docs", env="DOCS_URL")
+    docs_url: str | None = Field(default="/", env="DOCS_URL")
     redoc_url: str | None = Field(default=None, env="REDOC_URL")
 
     debug_mode: bool = Field(default=False, env="DEBUG_MODE")
