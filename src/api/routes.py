@@ -11,7 +11,8 @@ router = APIRouter()
 @router.get(
     "/statistics",
     status_code=200,
-    name="Get users statistics.",
+    name="Get users statistics",
+    description="Statistics of all users that are stored in database.",
     responses={
         200: {"description": "OK.", "model": list[UserStatistics]},
         401: {"description": "Unauthorized.", "model": HTTPError},
@@ -36,7 +37,8 @@ async def get_stat(request: Request) -> list[UserStatistics]:
 @router.post(
     "/gayoftheday",
     status_code=201,
-    name="Set gay of the day.",
+    name="Set gay of the day",
+    description="Set current gay of the day for proper calculation of statistics.",
     responses={
         201: {"description": "Created.", "model": UserStatistics},
         400: {"description": "Bad request.", "model": HTTPError},
