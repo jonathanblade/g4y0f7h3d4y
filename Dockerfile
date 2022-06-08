@@ -19,4 +19,4 @@ COPY pyproject.toml poetry.lock ./
 COPY src src
 
 RUN poetry install --no-dev
-CMD poetry run start
+CMD gunicorn -b 0.0.0.0:$APP_PORT -k uvicorn.workers.UvicornWorker src.main:app
