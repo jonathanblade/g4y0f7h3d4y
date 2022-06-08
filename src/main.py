@@ -1,5 +1,3 @@
-import os
-import logging
 from typing import Any
 
 import uvicorn
@@ -69,8 +67,6 @@ def create_app(settings: Settings) -> FastAPI:
     return app
 
 
-logging.info(f"APP_PORT {os.getenv('APP_PORT')}")
-logging.info(f"PORT {os.getenv('PORT')}")
 app = create_app(SETTINGS)
 
 
