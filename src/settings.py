@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     app_name: str = Field(default="Gay of the day", env="APP_NAME")
     app_version: str = Field(default="1.0.0", env="APP_VERSION")
     app_host: str = Field(default="0.0.0.0", env="APP_HOST")
-    app_post: int = Field(default=3000, env="APP_PORT")
+    app_port: int = Field(default=3000, env="APP_PORT")
 
     api_prefix: str = Field(default="/api", env="API_PREFIX")
     docs_url: str | None = Field(default="/docs", env="DOCS_URL")
