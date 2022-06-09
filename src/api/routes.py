@@ -60,12 +60,12 @@ async def set_curr_gay(request: Request, gay: GayOfTheDay) -> UserStatistics:
 
     prev_gay = await find_gay(collection, gay.server_id)
     if prev_gay:
-        await switch_user_orientation(collection, prev_gay.user_id, prev_gay.server_id)
+        await switch_user_orientation(collection, prev_gay)
 
     curr_gay = await find_user(collection, gay.user_id, gay.server_id)
     if not curr_gay:
         curr_gay = await create_new_user(collection, gay.user_id, gay.server_id)
-    await switch_user_orientation(collection, gay.user_id, gay.server_id)
+    await switch_user_orientation(collection, curr_gay)
 
     curr_gay = await find_user(collection, gay.user_id, gay.server_id)
 

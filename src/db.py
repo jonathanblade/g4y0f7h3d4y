@@ -27,7 +27,7 @@ class User(BaseModel):
 
 async def create_new_user(
     collection: AsyncIOMotorCollection, user_id: str, server_id: str
-) -> None:
+) -> User:
     user = User(
         user_id=user_id,
         server_id=server_id,
@@ -37,6 +37,7 @@ async def create_new_user(
         is_gay=False,
     )
     await collection.insert_one(user.dict())
+    return user
 
 
 async def find_user(
@@ -62,18 +63,16 @@ async def find_gay(collection: AsyncIOMotorCollection, server_id: str) -> User |
 
 
 async def switch_user_orientation(
-    collection: AsyncIOMotorCollection, user_id: str, server_id: str
+    collection: AsyncIOMotorCollection, user: User
 ) -> None:
-    user = await find_user(collection, user_id, server_id)
-    if user:
-        await collection.update_one(
-            {"user_id": user.user_id, "server_id": user.server_id},
-            {
-                "$set": {
-                    "duration": calc_duration(user.duration, user.assignment_time),
-                    "times": user.times if user.is_gay else user.times + 1,
-                    "assignment_time": None if user.is_gay else datetime.utcnow(),
-                    "is_gay": False if user.is_gay else True,
-                }
-            },
-        )
+    await collection.update_one(
+        {"user_id": user.user_id, "server_id": user.server_id},
+        {
+            "$set": {
+                "duration": calc_duration(user.duration, user.assignment_time),
+                "times": user.times if user.is_gay else user.times + 1,
+                "assignment_time": None if user.is_gay else datetime.utcnow(),
+                "is_gay": False if user.is_gay else True,
+            }
+        },
+    )
