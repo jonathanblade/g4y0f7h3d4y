@@ -67,7 +67,7 @@ async def switch_user_orientation(
     user = await find_user(collection, user_id, server_id)
     if user:
         await collection.update_one(
-            {"user_id": user.user_id},
+            {"user_id": user.user_id, "server_id": user.server_id},
             {
                 "$set": {
                     "duration": calc_duration(user.duration, user.assignment_time),
