@@ -6,7 +6,8 @@ class HTTPError(BaseModel):
 
 
 class UserStatistics(BaseModel):
-    user_id: int = Field(description="User ID.", example=12345)
+    user_id: str = Field(description="User ID.", example="199469501362733056")
+    server_id: str = Field(description="Server ID.", example="969761588238241802")
     duration: int = Field(
         description="Total time in seconds how long the user has been a gay of the day.",
         example=12345,
@@ -22,4 +23,5 @@ class UserStatistics(BaseModel):
 
 
 class GayOfTheDay(BaseModel):
-    user_id: int = Field(description="User ID.", example=12345)
+    user_id: str = Field(description="User ID.", example="199469501362733056")
+    server_id: str = Field(description="Server ID.", example="969761588238241802")

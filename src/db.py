@@ -17,16 +17,20 @@ def connect_db() -> AsyncIOMotorDatabase:
 
 
 class User(BaseModel):
-    user_id: int
+    user_id: str
+    server_id: str
     duration: int
     times: int
     assignment_time: datetime | None
     is_gay: bool
 
 
-async def create_new_user(collection: AsyncIOMotorCollection, user_id: int) -> None:
+async def create_new_user(
+    collection: AsyncIOMotorCollection, user_id: str, server_id: str
+) -> None:
     user = User(
         user_id=user_id,
+        server_id=server_id,
         duration=0,
         times=0,
         assignment_time=None,
@@ -35,26 +39,32 @@ async def create_new_user(collection: AsyncIOMotorCollection, user_id: int) -> N
     await collection.insert_one(user.dict())
 
 
-async def find_user_by_id(
-    collection: AsyncIOMotorCollection, user_id: int
+async def find_user(
+    collection: AsyncIOMotorCollection,
+    user_id: str,
+    server_id: str,
 ) -> User | None:
-    user = await collection.find_one({"user_id": user_id}, {"_id": False})
+    user = await collection.find_one(
+        {"user_id": user_id, "server_id": server_id}, {"_id": False}
+    )
     if user:
         return User(**user)
     return user
 
 
-async def find_gay(collection: AsyncIOMotorCollection) -> User | None:
-    user = await collection.find_one({"is_gay": True}, {"_id": False})
+async def find_gay(collection: AsyncIOMotorCollection, server_id: str) -> User | None:
+    user = await collection.find_one(
+        {"server_id": server_id, "is_gay": True}, {"_id": False}
+    )
     if user:
         return User(**user)
     return user
 
 
 async def switch_user_orientation(
-    collection: AsyncIOMotorCollection, user_id: int
+    collection: AsyncIOMotorCollection, user_id: str, server_id: str
 ) -> None:
-    user = await find_user_by_id(collection, user_id)
+    user = await find_user(collection, user_id, server_id)
     if user:
         await collection.update_one(
             {"user_id": user.user_id},
