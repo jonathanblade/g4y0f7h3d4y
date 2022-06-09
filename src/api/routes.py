@@ -30,7 +30,6 @@ async def get_stat(
     if server_id:
         query.update({"server_id": server_id})
     users = await collection.find(query, {"_id": False}).to_list(length=1000)
-    print(users)
     return [
         UserStatistics(
             user_id=user["user_id"],
