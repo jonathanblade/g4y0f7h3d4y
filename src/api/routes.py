@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, Request
-from pymongo import DESCENDING
 
 from src.api.schemas import GayOfTheDay, HTTPError, UserStatistics
 from src.api.security import require_api_key
@@ -30,12 +29,8 @@ async def get_stat(
         query.update({"user_id": user_id})
     if server_id:
         query.update({"server_id": server_id})
-    users = (
-        await collection.find(query, {"_id": False})
-        .sort("duration", DESCENDING)
-        .to_list(length=1000)
-    )
-    return [
+    users = await collection.find(query, {"_id": False}).to_list(length=1000)
+    statistics = [
         UserStatistics(
             user_id=user["user_id"],
             server_id=user["server_id"],
@@ -45,6 +40,7 @@ async def get_stat(
         )
         for user in users
     ]
+    return sorted(statistics, key=lambda x: x.duration, reverse=True)
 
 
 @router.post(
