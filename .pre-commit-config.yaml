@@ -1,0 +1,22 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: local
+    hooks:
+      - id: isort
+        name: isort
+        entry: poetry run isort --check --diff src
+        pass_filenames: false
+        language: system
+
+      - id: black
+        name: black
+        entry: poetry run black --check --diff src
+        pass_filenames: false
+        language: system
+
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy src
+        pass_filenames: false
+        language: system
